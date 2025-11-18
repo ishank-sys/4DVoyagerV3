@@ -1,0 +1,11 @@
+node_modules/
+
+# GLB model files - too large for Git
+*.glb
+*.gltf
+public/*/FromTeklaStructures-*.glb
+public/*/scene.glb
+
+# Service account credentials - NEVER commit these!
+service-account-key.json
+*-service-account*.json

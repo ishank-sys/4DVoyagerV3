@@ -1,0 +1,337 @@
+[
+  {
+    "member": "Anchor Bolt",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_08-03-2026-1.glb",
+        "FromTeklaStructures_08-06-2026-2.glb",
+        "FromTeklaStructures_08-08-2026-3.glb"
+      ],
+      "file": "FromTeklaStructures_08-16-2026-4.glb",
+      "date": "08/16",
+      "note": "Fabrication completed for Anchor Bolt."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_12-02-2026-56.glb",
+        "FromTeklaStructures_12-07-2026-59.glb",
+        "FromTeklaStructures_12-10-2026-60.glb"
+      ],
+      "file": "FromTeklaStructures_12-18-2026-63.glb",
+      "date": "12/18",
+      "note": "Erection completed for Anchor Bolt."
+    }
+  },
+
+  {
+    "member": "SEQ-101",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_08-20-2026-6.glb",
+        "FromTeklaStructures_08-24-2026-7.glb",
+        "FromTeklaStructures_08-28-2026-8.glb"
+      ],
+      "file": "FromTeklaStructures_08-27-2026-*.glb",
+      "date": "08/27",
+      "note": "Fabrication completed for SEQ-101."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_01-01-2027-70.glb",
+        "FromTeklaStructures_01-02-2027-71.glb",
+        "FromTeklaStructures_01-03-2027-72.glb"
+      ],
+      "file": "FromTeklaStructures_01-10-2027-75.glb",
+      "date": "01/10",
+      "note": "Erection completed for SEQ-101."
+    }
+  },
+
+  {
+    "member": "SEQ-102",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_09-01-2026-10.glb",
+        "FromTeklaStructures_09-05-2026-11.glb",
+        "FromTeklaStructures_09-09-2026-12.glb"
+      ],
+      "file": "FromTeklaStructures_09-05-2026-11.glb",
+      "date": "09/05",
+      "note": "Fabrication completed for SEQ-102."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_01-21-2027-79.glb",
+        "FromTeklaStructures_01-24-2027-80.glb",
+        "FromTeklaStructures_01-27-2027-81.glb"
+      ],
+      "file": "FromTeklaStructures_01-24-2027-80.glb",
+      "date": "01/24",
+      "note": "Erection completed for SEQ-102."
+    }
+  },
+
+  {
+    "member": "SEQ-103",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_09-11-2026-13.glb",
+        "FromTeklaStructures_09-14-2026-14.glb",
+        "FromTeklaStructures_09-16-2026-15.glb"
+      ],
+      "file": "FromTeklaStructures_09-11-2026-13.glb",
+      "date": "09/11",
+      "note": "Fabrication completed for SEQ-103."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_02-02-2027-83.glb",
+        "FromTeklaStructures_02-03-2027-84.glb",
+        "FromTeklaStructures_02-07-2027-85.glb"
+      ],
+      "file": "FromTeklaStructures_02-07-2027-85.glb",
+      "date": "02/07",
+      "note": "Erection completed for SEQ-103."
+    }
+  },
+
+  {
+    "member": "SEQ-104",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_09-16-2026-15.glb",
+        "FromTeklaStructures_09-18-2026-16.glb",
+        "FromTeklaStructures_09-19-2026-17.glb"
+      ],
+      "file": "FromTeklaStructures_09-18-2026-16.glb",
+      "date": "09/18",
+      "note": "Fabrication completed for SEQ-104."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_02-17-2027-88.glb",
+        "FromTeklaStructures_02-18-2027-89.glb",
+        "FromTeklaStructures_02-21-2027-90.glb"
+      ],
+      "file": "FromTeklaStructures_02-21-2027-90.glb",
+      "date": "02/21",
+      "note": "Erection completed for SEQ-104."
+    }
+  },
+
+  {
+    "member": "SEQ-105",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_09-24-2026-19.glb",
+        "FromTeklaStructures_09-26-2026-20.glb",
+        "FromTeklaStructures_09-29-2026-21.glb"
+      ],
+      "file": "FromTeklaStructures_09-26-2026-20.glb",
+      "date": "09/26",
+      "note": "Fabrication completed for SEQ-105."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_03-03-2027-96.glb",
+        "FromTeklaStructures_03-07-2027-97.glb",
+        "FromTeklaStructures_03-10-2027-98.glb"
+      ],
+      "file": "FromTeklaStructures_03-07-2027-97.glb",
+      "date": "03/07",
+      "note": "Erection completed for SEQ-105."
+    }
+  },
+
+  {
+    "member": "SEQ-106",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_10-09-2026-26.glb",
+        "FromTeklaStructures_10-11-2026-26.glb",
+        "FromTeklaStructures_10-12-2026-26.glb"
+      ],
+      "file": "FromTeklaStructures_10-11-2026-26.glb",
+      "date": "10/11",
+      "note": "Fabrication completed for SEQ-106."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_03-19-2027-101.glb",
+        "FromTeklaStructures_03-21-2027-102.glb",
+        "FromTeklaStructures_03-22-2027-103.glb"
+      ],
+      "file": "FromTeklaStructures_03-22-2027-103.glb",
+      "date": "03/22",
+      "note": "Erection completed for SEQ-106."
+    }
+  },
+
+  {
+    "member": "SEQ-201",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_10-20-2026-31.glb",
+        "FromTeklaStructures_10-21-2026-32.glb",
+        "FromTeklaStructures_10-23-2026-33.glb"
+      ],
+      "file": "FromTeklaStructures_10-20-2026-31.glb",
+      "date": "10/20",
+      "note": "Fabrication completed for SEQ-201."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_01-01-2027-70.glb",
+        "FromTeklaStructures_01-02-2027-71.glb",
+        "FromTeklaStructures_01-03-2027-72.glb"
+      ],
+      "file": "FromTeklaStructures_01-10-2027-75.glb",
+      "date": "01/10",
+      "note": "Erection completed for SEQ-201."
+    }
+  },
+
+  {
+    "member": "SEQ-202",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_10-29-2026-36.glb",
+        "FromTeklaStructures_10-30-2026-37.glb",
+        "FromTeklaStructures_11-03-2026-38.glb"
+      ],
+      "file": "FromTeklaStructures_10-29-2026-36.glb",
+      "date": "10/29",
+      "note": "Fabrication completed for SEQ-202."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_01-24-2027-80.glb",
+        "FromTeklaStructures_01-27-2027-81.glb",
+        "FromTeklaStructures_01-28-2027-82.glb"
+      ],
+      "file": "FromTeklaStructures_01-24-2027-80.glb",
+      "date": "01/24",
+      "note": "Erection completed for SEQ-202."
+    }
+  },
+
+  {
+    "member": "SEQ-203",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_11-07-2026-40.glb",
+        "FromTeklaStructures_11-08-2026-41.glb",
+        "FromTeklaStructures_11-10-2026-42.glb"
+      ],
+      "file": "FromTeklaStructures_11-07-2026-40.glb",
+      "date": "11/07",
+      "note": "Fabrication completed for SEQ-203."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_02-07-2027-85.glb",
+        "FromTeklaStructures_02-09-2027-86.glb",
+        "FromTeklaStructures_02-12-2027-87.glb"
+      ],
+      "file": "FromTeklaStructures_02-07-2027-85.glb",
+      "date": "02/07",
+      "note": "Erection completed for SEQ-203."
+    }
+  },
+
+  {
+    "member": "SEQ-204",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_11-16-2026-45.glb",
+        "FromTeklaStructures_11-17-2026-46.glb",
+        "FromTeklaStructures_11-20-2026-47.glb"
+      ],
+      "file": "FromTeklaStructures_11-16-2026-45.glb",
+      "date": "11/16",
+      "note": "Fabrication completed for SEQ-204."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_02-21-2027-90.glb",
+        "FromTeklaStructures_02-22-2027-91.glb",
+        "FromTeklaStructures_02-24-2027-92.glb"
+      ],
+      "file": "FromTeklaStructures_02-21-2027-90.glb",
+      "date": "02/21",
+      "note": "Erection completed for SEQ-204."
+    }
+  },
+
+  {
+    "member": "SEQ-205",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_11-27-2026-52.glb",
+        "FromTeklaStructures_11-29-2026-53.glb",
+        "FromTeklaStructures_11-30-2026-54.glb"
+      ],
+      "file": "FromTeklaStructures_11-27-2026-52.glb",
+      "date": "11/27",
+      "note": "Fabrication completed for SEQ-205."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_03-07-2027-97.glb",
+        "FromTeklaStructures_03-10-2027-98.glb",
+        "FromTeklaStructures_03-12-2027-99.glb"
+      ],
+      "file": "FromTeklaStructures_03-07-2027-97.glb",
+      "date": "03/07",
+      "note": "Erection completed for SEQ-205."
+    }
+  },
+
+  {
+    "member": "SEQ-206",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_11-29-2026-53.glb",
+        "FromTeklaStructures_11-30-2026-54.glb",
+        "FromTeklaStructures_12-01-2026-55.glb"
+      ],
+      "file": "FromTeklaStructures_11-30-2026-54.glb",
+      "date": "11/30",
+      "note": "Fabrication completed for SEQ-206."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_03-21-2027-102.glb",
+        "FromTeklaStructures_03-22-2027-103.glb",
+        "FromTeklaStructures_03-24-2027-104.glb"
+      ],
+      "file": "FromTeklaStructures_03-22-2027-103.glb",
+      "date": "03/22",
+      "note": "Erection completed for SEQ-206."
+    }
+  },
+
+  {
+    "member": "Stair & Misc",
+    "fabricationCompletion": {
+      "files": [
+        "FromTeklaStructures_12-02-2026-56.glb",
+        "FromTeklaStructures_12-03-2026-57.glb",
+        "FromTeklaStructures_12-04-2026-58.glb"
+      ],
+      "file": "FromTeklaStructures_12-04-2026-58.glb",
+      "date": "12/04",
+      "note": "Fabrication completed for Stair & Misc."
+    },
+    "erectionCompletion": {
+      "files": [
+        "FromTeklaStructures_04-05-2027-109.glb",
+        "FromTeklaStructures_03-30-2027-108.glb",
+        "FromTeklaStructures_03-29-2027-107.glb"
+      ],
+      "file": "FromTeklaStructures_04-05-2027-109.glb",
+      "date": "04/06",
+      "note": "Erection completed for Stair & Misc."
+    }
+  }
+]

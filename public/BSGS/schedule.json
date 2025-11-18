@@ -1,0 +1,137 @@
+[
+  {
+    "member": "Foundation Embeds",
+    "fabricationCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-2.glb",
+      "date": "2026-01-01",
+      "note": "Foundation Embeds Fabricated"
+    },
+    "erectionCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-35.glb",
+      "date": "2026-01-03",
+      "note": "Foundation Embeds Erected"
+    }
+  },
+  {
+    "member": "AB (3A)",
+    "fabricationCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-3.glb",
+      "date": "2026-01-05",
+      "note": "ABs of Phase 3A Fabricated"
+    },
+    "erectionCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-35.glb",
+      "date": "2026-01-07",
+      "note": "ABs of Phase 3A Erected"
+    }
+  },
+  {
+    "member": "AB (3B)",
+    "fabricationCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-7.glb",
+      "date": "2026-01-08",
+      "note": "ABs of Phase 3B Fabricated"
+    },
+    "erectionCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-35.glb",
+      "date": "2026-01-10",
+      "note": "ABs of Phase 3B Erected"
+    }
+  },
+  {
+    "member": "AB (3C)",
+    "fabricationCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-13.glb",
+      "date": "2026-01-11",
+      "note": "ABs of Phase 3B Fabricated"
+    },
+    "erectionCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-35.glb",
+      "date": "2026-01-13",
+      "note": "ABs of Phase 3B Erected"
+    }
+  },
+  {
+    "member": "AB (3D)",
+    "fabricationCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-23.glb",
+      "date": "2026-01-14",
+      "note": "ABs of Phase 3B Fabricated"
+    },
+    "erectionCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-35.glb",
+      "date": "2026-01-16",
+      "note": "ABs of Phase 3B Erected"
+    }
+  },
+  {
+    "member": "Phase 03A",
+    "fabricationCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-16.glb",
+      "date": "2026-01-18",
+      "note": "Phase 3A Fabricated"
+    },
+    "erectionCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-83.glb",
+      "date": "2026-01-20",
+      "note": "Phase 3A Erected"
+    }
+  },
+  {
+    "member": "Phase 03B",
+    "fabricationCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-31.glb",
+      "date": "2026-01-22",
+      "note": "Phase 3B Fabricated"
+    },
+    "erectionCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-91.glb",
+      "date": "2026-01-24",
+      "note": "Phase 3B Erected"
+    }
+  },
+  {
+    "member": "Phase 03C",
+    "fabricationCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-48.glb",
+      "date": "2026-01-26",
+      "note": "Phase 3C Fabricated"
+    },
+    "erectionCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-100.glb",
+      "date": "2026-01-28",
+      "note": "Phase 3C Erected"
+    }
+  },
+  {
+    "member": "Phase 03D",
+    "fabricationCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-77.glb",
+      "date": "2026-01-30",
+      "note": "Phase 3D Fabricated"
+    },
+    "erectionCompletion": {
+      "files": ["BSGSifc-1.glb","BSGSifc-2.glb","BSGSifc-3.glb"],
+      "file": "BSGSifc-114.glb",
+      "date": "2026-02-01",
+      "note": "Phase 3D Erected"
+    }
+  }
+]

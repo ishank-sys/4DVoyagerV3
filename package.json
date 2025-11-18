@@ -1,0 +1,15 @@
+{
+  "name": "4dvoyager",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.148.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.12"
+  }
+}

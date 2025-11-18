@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4D Voyager | Able Steel Projects</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --bg-secondary: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: rgba(0, 0, 0, 0.08);
+      --brand: #2563eb;
+      --brand-light: #60a5fa;
+      --shadow: rgba(0, 0, 0, 0.05);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --bg-secondary: #1e293b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: rgba(0, 0, 0, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.4s ease, color 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 8px var(--shadow);
+      z-index: 100;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--brand);
+    }
+
+    .brand-logo {
+      background: linear-gradient(135deg, var(--brand), var(--brand-light));
+      color: white;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+    }
+
+    .header-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 18px;
+    }
+
+    .theme-toggle:hover {
+      background: var(--brand);
+      color: white;
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 60px 24px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 50px;
+    }
+
+    /* === Layout polish for reverse pyramid === */
+.grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px; /* increase spacing between rows */
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* instead of cover */
+  background: var(--bg-secondary);
+  padding: 6px; /* optional small margin inside */
+}
+
+.row.top {
+  max-width: 1100px;
+}
+
+.row.bottom {
+  max-width: 750px;
+  margin-top: -20px; /* slight upward pull to form pyramid visually */
+}
+
+/* Center entire grid vertically on larger screens */
+main {
+  flex: 1;
+  max-width: 4000px;
+  margin: 0 auto;
+  padding: 60px 24px 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+/* === Card visuals refinement === */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 8px 22px var(--shadow);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 320px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(37,99,235,0.18);
+  border-color: var(--brand-light);
+}
+
+/* === Visual balance tweaks for images and meta === */
+.preview {
+  position: relative;
+  height: 220px; /* previously 190px */
+  background: linear-gradient(135deg, #e3ecff, #f7faff);
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+
+[data-theme="dark"] .preview {
+  background: linear-gradient(135deg, #1e3a8a, #1e40af);
+}
+
+.meta {
+  padding: 18px 20px;
+  text-align: left;
+}
+
+.project {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 16.5px;
+}
+
+.tonnage {
+  color: var(--text-muted);
+  font-size: 13.5px;
+  margin-top: 4px;
+}
+
+/* === Responsive fine-tuning === */
+@media (max-width: 1000px) {
+  .grid {
+    gap: 40px;
+  }
+  .row {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
+  .grid {
+    gap: 30px;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-logo">4D</div>
+      4D Voyager
+    </div>
+    <span class="header-subtitle">Developed by Structures Online (SOL) for Able Steel</span>
+    <div class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</div>
+  </header>
+
+  <main>
+    <h1>4D GLB Visualization Dashboard</h1>
+    <div class="subtitle">Select a project below to launch the interactive viewer.</div>
+
+    <section class="grid">
+      <!-- TOP ROW (3 CARDS) -->
+      <div class="row top">
+        <a class="card" href="viewer.html?project=BSGS">
+          <div class="preview">
+            <img src="" data-blob-path="BSGS1.png" alt="BSGS Preview" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span class="fallback">Preview</span>
+          </div>
+          <div class="meta">
+            <div class="project">Project: BSGS</div>
+            <div class="tonnage">Tonnage: —</div>
+          </div>
+        </a>
+
+        <a class="card" href="viewer.html?project=CUP">
+          <div class="preview">
+            <img src="" data-blob-path="cupbg.png" alt="CUP Preview" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span class="fallback">Preview</span>
+          </div>
+          <div class="meta">
+            <div class="project">Project: CUP</div>
+            <div class="tonnage">Tonnage: —</div>
+          </div>
+        </a>
+
+        <a class="card" href="viewer.html?project=WRC">
+          <div class="preview">
+            <img src="" data-blob-path="Waste.png" alt="WRC Preview" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span class="fallback">Preview</span>
+          </div>
+          <div class="meta">
+            <div class="project">Project: Waste Management</div>
+            <div class="tonnage">Tonnage: —</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- BOTTOM ROW (2 CARDS) -->
+      <div class="row bottom">
+        <a class="card" href="viewer.html?project=LORRY">
+          <div class="preview">
+            <img src="" data-blob-path="lorry1.png" alt="LORRY Preview" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span class="fallback">Preview</span>
+          </div>
+          <div class="meta">
+            <div class="project">Project: LORRY</div>
+            <div class="tonnage">Tonnage: —</div>
+          </div>
+        </a>
+
+        <a class="card" href="viewer.html?project=1">
+          <div class="preview">
+            <img src="" data-blob-path="1bg.png" alt="WRC Preview" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span class="fallback">Preview</span>
+          </div>
+          <div class="meta">
+            <div class="project">Project: WRC</div>
+            <div class="tonnage">Tonnage: —</div>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2025 4D Voyager | Able Steel Project Dashboard</footer>
+
+  <script type="module" src="./index.js"></script>
+
+  <script>
+    // Base URL for static assets stored in Vercel Blob storage.
+    // Make sure the preview PNG files used below are uploaded there.
+    const BLOB_BASE_URL = window.process?.env?.NEXT_PUBLIC_BLOB_BASE_URL || (typeof process !== 'undefined' ? process.env?.NEXT_PUBLIC_BLOB_BASE_URL : undefined);
+
+    function buildBlobUrl(path) {
+      if (!BLOB_BASE_URL) {
+        console.error('NEXT_PUBLIC_BLOB_BASE_URL environment variable is not defined');
+        return '';
+      }
+      const normalizedBase = BLOB_BASE_URL.replace(/\/+$/, '');
+      const normalizedPath = String(path || '').replace(/^\/+/, '');
+      return `${normalizedBase}/${normalizedPath}`;
+    }
+
+    // Apply blob URLs to all preview thumbnails
+    document.querySelectorAll('img[data-blob-path]').forEach(img => {
+      const key = img.getAttribute('data-blob-path');
+      img.src = buildBlobUrl(key);
+    });
+
+    const toggleBtn = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    toggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+    toggleBtn.addEventListener('click', () => {
+      const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+[
+  {
+    "member": "PHASE-1",
+    "fabricationCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-30.glb",
+        "301_LORRY_3D MODEL-Off-32.glb",
+        "301_LORRY_3D MODEL-Off-36.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-15.glb",
+      "date": "2026-02-01",
+      "note": "The fabrication of Anchor Bolts, Columns, and Beams for Phase 1 has been successfully completed."
+    },
+    "erectionCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-38.glb",
+        "301_LORRY_3D MODEL-Off-43.glb",
+        "301_LORRY_3D MODEL-Off-52.glb",
+        "301_LORRY_3D MODEL-Off-56.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-71.glb",
+      "date": "2026-02-03",
+      "note": "The Erection of Anchor Bolts, Columns, and Beams for Phase 1 has been successfully completed."
+    }
+  },
+  {
+    "member": "PHASE-2",
+    "fabricationCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-32.glb",
+        "301_LORRY_3D MODEL-Off-36.glb",
+        "301_LORRY_3D MODEL-Off-38.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-25.glb",
+      "date": "2026-02-05",
+      "note": "The fabrication of Columns, and Beams for Phase 2 has been successfully completed."
+    },
+    "erectionCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-52.glb",
+        "301_LORRY_3D MODEL-Off-56.glb",
+        "301_LORRY_3D MODEL-Off-46.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-88.glb",
+      "date": "2026-02-07",
+      "note": "The Erection Columns, and Beams for Phase 2 has been successfully completed."
+    }
+  },
+  {
+    "member": "PHASE-3",
+    "fabricationCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-43.glb",
+        "301_LORRY_3D MODEL-Off-46.glb",
+        "301_LORRY_3D MODEL-Off-52.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-30.glb",
+      "date": "2026-02-10",
+      "note": "The fabrication of Columns, and Beams for Phase 3 has been successfully completed."
+    },
+    "erectionCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-36.glb",
+        "301_LORRY_3D MODEL-Off-38.glb",
+        "301_LORRY_3D MODEL-Off-43.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-106.glb",
+      "date": "2026-02-12",
+      "note": "The Erection Columns, and Beams for Phase 3 has been successfully completed."
+    }
+  },
+  {
+    "member": "PHASE-4",
+    "fabricationCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-38.glb",
+        "301_LORRY_3D MODEL-Off-43.glb",
+        "301_LORRY_3D MODEL-Off-46.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-36.glb",
+      "date": "2026-02-14",
+      "note": "The fabrication of Columns, and Beams for Phase 4 has been successfully completed."
+    },
+    "erectionCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-30.glb",
+        "301_LORRY_3D MODEL-Off-32.glb",
+        "301_LORRY_3D MODEL-Off-56.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-123.glb",
+      "date": "2026-02-16",
+      "note": "The Erection Columns, and Beams for Phase 4 has been successfully completed."
+    }
+  },
+  {
+    "member": "PHASE-5",
+    "fabricationCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-52.glb",
+        "301_LORRY_3D MODEL-Off-56.glb",
+        "301_LORRY_3D MODEL-Off-36.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-43.glb",
+      "date": "2026-02-18",
+      "note": "The fabrication of Columns, and Beams for Phase 5 has been successfully completed."
+    },
+    "erectionCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-38.glb",
+        "301_LORRY_3D MODEL-Off-46.glb",
+        "301_LORRY_3D MODEL-Off-52.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-131.glb",
+      "date": "2026-02-20",
+      "note": "The Erection Columns, and Beams for Phase 5 has been successfully completed."
+    }
+  },
+  {
+    "member": "PHASE-6",
+    "fabricationCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-30.glb",
+        "301_LORRY_3D MODEL-Off-32.glb",
+        "301_LORRY_3D MODEL-Off-52.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-46.glb",
+      "date": "2026-02-22",
+      "note": "The fabrication of Columns, and Beams for Phase 6 has been successfully completed."
+    },
+    "erectionCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-43.glb",
+        "301_LORRY_3D MODEL-Off-38.glb",
+        "301_LORRY_3D MODEL-Off-56.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-141.glb",
+      "date": "2026-02-24",
+      "note": "The Erection Columns, and Beams for Phase 6 has been successfully completed."
+    }
+  },
+  {
+    "member": "PHASE-7",
+    "fabricationCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-32.glb",
+        "301_LORRY_3D MODEL-Off-36.glb",
+        "301_LORRY_3D MODEL-Off-56.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-56.glb",
+      "date": "2026-02-26",
+      "note": "The fabrication of Columns, and Beams for Phase 7 has been successfully completed."
+    },
+    "erectionCompletion": {
+      "files": [
+        "301_LORRY_3D MODEL-Off-30.glb",
+        "301_LORRY_3D MODEL-Off-38.glb",
+        "301_LORRY_3D MODEL-Off-52.glb"
+      ],
+      "file": "301_LORRY_3D MODEL-Off-153.glb",
+      "date": "2026-02-28",
+      "note": "The Erection Columns, and Beams for Phase 7 has been successfully completed."
+    }
+  }
+]

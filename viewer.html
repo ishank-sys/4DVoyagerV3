@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4D Voyager GLB Viewer</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-panel: rgba(255, 255, 255, 0.75);
+      --text: #1e293b;
+      --text-muted: #475569;
+      --border: rgba(0, 0, 0, 0.08);
+      --highlight: #2563eb;
+      --overlay: rgba(0, 0, 0, 0); /* No dark filter in light mode */
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b0f1e;
+      --bg-panel: rgba(30, 41, 59, 0.8);
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --highlight: #60a5fa;
+      --overlay: rgba(0, 0, 0, 0); /* Medium GLB overlay */
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      height:100vh;width:100vw;overflow:hidden;
+      font-family:'Inter',system-ui,sans-serif;
+      background:var(--bg);color:var(--text);
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    /* ===== HEADER ===== */
+    #app-header{
+      position:fixed;top:16px;left:50%;transform:translateX(-50%);
+      width:97%;height:60px;display:flex;align-items:center;justify-content:space-between;
+      padding:0 24px;background:var(--bg-panel);
+      backdrop-filter:saturate(180%) blur(18px);
+      border:1px solid var(--border);border-radius:12px;
+      box-shadow:0 4px 16px rgba(0,0,0,.06);z-index:50;
+      transition:background 0.3s ease,color 0.3s ease;
+    }
+
+    .brand-box{
+      padding:8px 16px;border-radius:8px;
+      background:linear-gradient(135deg,#2563eb,#60a5fa);
+      color:#fff;font-weight:600;
+    }
+
+    .legend-inline{
+      display:flex;align-items:center;gap:16px;
+      font-size:13px;color:var(--text-muted);
+    }
+    .legend-item{display:flex;align-items:center;gap:6px;white-space:nowrap;}
+    .legend-color{width:12px;height:12px;border-radius:3px;}
+
+    
+.light-red { background-color: #ff9999; }
+.red { background-color: #ff0000; }
+.green { background-color: #00cc00; }
+.dark-green { background-color: #006600; }
+
+    /* ===== THEME TOGGLE ===== */
+    .theme-toggle {
+      cursor:pointer;border:1px solid var(--border);
+      border-radius:8px;width:40px;height:40px;
+      display:flex;align-items:center;justify-content:center;
+      background:var(--bg-panel);color:var(--text);
+      transition:all 0.3s ease;
+    }
+    .theme-toggle:hover {
+      background:var(--highlight);
+      color:#fff;
+    }
+
+    /* ===== VIEWER ===== */
+    #viewer-container{
+      position:absolute;top:0;bottom:0;left:0;right:0;
+      background:#0b0f1e;z-index:1;
+      transition:filter 0.4s ease;
+    }
+
+    /* GLB overlay */
+    #viewer-overlay {
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      /* Default to transparent overlay; theme script will adjust for light mode if desired */
+      background: rgba(0, 0, 0, 0.0);
+      transition: background 0.5s ease;
+      z-index:2;
+    }
+    canvas { background-color: black; }
+    /* ===== TABLE ===== */
+    #progress-table{
+      position:fixed;right:30px;top:90px;width:380px;
+      background:var(--bg-panel);
+      backdrop-filter:blur(14px);
+      border:1px solid var(--border);border-radius:12px;
+      box-shadow:0 4px 14px rgba(0,0,0,.08);
+      color:var(--text);z-index:45;
+      transition:background 0.3s ease,color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      height: auto;
+      max-height: 225px; /* Header (45px) + 4 rows (45px each) = 225px */
+    }
+    
+    .table-container {
+      overflow-y: auto;
+      flex: 1;
+      scroll-behavior: smooth;
+    }
+    
+    #progress-table .collapse-btn{
+      position:absolute;top:8px;right:8px;z-index:1;
+      width:28px;height:28px;border-radius:6px;border:1px solid var(--border);
+      background:transparent;color:var(--text-muted);cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:all .2s ease;
+    }
+    #progress-table .collapse-btn:hover{background:rgba(37,99,235,.1);color:var(--highlight);}
+
+    /* Collapsed state turns the table into a small button */
+    #progress-table.collapsed{
+      top:auto;bottom:205px;right:30px;
+      width:auto;height:auto;overflow:visible;padding:0;
+      background:transparent;border:0;box-shadow:none;
+    }
+    #progress-table.collapsed .table-container{display:none;}
+    #progress-table .table-mini{display:none;}
+    #progress-table.collapsed .table-mini{
+      display:flex;align-items:center;gap:8px;
+      padding:8px 12px;border:1px solid var(--border);
+      background:var(--bg-panel);color:var(--text);
+      border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.08);
+      cursor:pointer;user-select:none;
+    }
+    /* Clickable cells base style */
+#progress-tbody td.clickable {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Hover effect */
+#progress-tbody td.clickable:hover {
+  background-color: #fff8cc;
+}
+
+/* Highlight for completed (<= clicked date) */
+#progress-tbody td.clickable.selected {
+  background-color: #fff2a8; /* light yellow */
+  font-weight: 600;
+  color: #444;
+}
+
+/* New: fabrication / erection progressive highlight shades */
+/* Fabrication end (red shade) */
+#progress-tbody td.fab-done {
+  background: linear-gradient(90deg,#ffecec,#ffd4d4);
+  color:#7f1d1d;
+  font-weight:600;
+}
+#progress-tbody td.fab-current { /* exact current index */
+  background: linear-gradient(90deg,#ffb3b3,#ff8a8a);
+  color:#7f1d1d;
+  font-weight:700;
+}
+/* Erection end (green shade) */
+#progress-tbody td.erec-done {
+  background: linear-gradient(90deg,#e9ffe9,#d2ffd2);
+  color:#064e3b;
+  font-weight:600;
+}
+#progress-tbody td.erec-current {
+  background: linear-gradient(90deg,#b8ffb8,#8dff8d);
+  color:#064e3b;
+  font-weight:700;
+}
+
+/* Optional: smoother table row highlighting */
+#progress-tbody tr:hover td {
+  background-color: #fefae0;
+}
+
+    #progress-table.collapsed .table-mini:hover{background:rgba(37,99,235,.1);}    
+    /* Hide collapse button once collapsed */
+    #progress-table.collapsed .collapse-btn { display:none; }
+    #progress-table table{width:100%;border-collapse:collapse;}
+    #progress-table th,#progress-table td{
+      padding:10px 12px;border-bottom:1px solid var(--border);
+      text-align:left;font-size:13px;
+      height: 45px; /* Fixed row height for consistent scrolling */
+    }
+    #progress-table th{
+      background:rgba(232,240,255,.9);
+      font-weight:600;color:#1e3a8a;
+      position:sticky;top:0;
+    }
+    [data-theme="dark"] #progress-table th {
+      background:rgba(37,99,235,0.2);
+      color:#93c5fd;
+    }
+
+    #progress-table tr:hover{background:rgba(37,99,235,.08);}
+    #progress-table tr.active{background:rgba(37,99,235,.15);}
+
+    /* ===== BOTTOM TIMELINE ===== */
+    #bottom-bar{
+      position:fixed;left:50%;transform:translateX(-50%);
+      bottom:16px;width:97%;padding:16px 24px;
+      background:var(--bg-panel);backdrop-filter:saturate(180%) blur(18px);
+      border:1px solid var(--border);border-radius:12px;
+      box-shadow:0 4px 16px rgba(0,0,0,.06);z-index:50;
+      display:flex;flex-direction:column;align-items:center;gap:10px;
+      transition:background 0.3s ease,color 0.3s ease;
+    }
+    /* Timeline popup tooltip (fixed near the top-left under the header) */
+    #timeline-popup {
+      position:fixed;
+      top:90px; /* just under the header (16px gap + 60px header + ~14px margin) */
+      left:30px; /* default offset from the left edge */
+      transform:translateY(6px);
+      background:var(--bg-panel);
+      border:1px solid var(--border);
+      padding:8px 12px;
+      font-size:12px;
+      line-height:1.3;
+      max-width:320px;
+      border-radius:8px;
+      box-shadow:0 4px 14px rgba(0,0,0,.15);
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .2s ease, transform .25s ease;
+      z-index:60;
+    }
+    #timeline-popup.visible {
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    #model-slider{
+      -webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;
+      background:linear-gradient(to right,#cbd5e1,#3b82f6);outline:none;margin-top:4px;
+    }
+    [data-theme="dark"] #model-slider{
+      background:linear-gradient(to right,#475569,#60a5fa);
+    }
+    #model-slider::-webkit-slider-thumb{
+      -webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;
+      background:#2563eb;border:2px solid #fff;box-shadow:0 0 4px rgba(37,99,235,.4);
+      cursor:pointer;transition:transform .2s ease;
+    }
+    #model-slider:hover::-webkit-slider-thumb{transform:scale(1.15);}
+
+    .timeline-scale{width:100%;display:flex;justify-content:space-between;align-items:flex-start;position:relative;margin-top:4px;}
+    .timeline-scale::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:#d1d5db;}
+    [data-theme="dark"] .timeline-scale::before{background:#334155;}
+    .tick{width:1px;height:8px;background:#9ca3af;position:relative;top:-4px;}
+    [data-theme="dark"] .tick{background:#64748b;}
+    .timeline-dates{display:flex;justify-content:space-between;width:100%;font-size:12px;color:#64748b;margin-top:4px;}
+    [data-theme="dark"] .timeline-dates{color:#94a3b8;}
+
+    .bottom-controls{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:6px;}
+    #slider-date{font-size:14px;color:var(--text);font-weight:500;min-width:150px;text-align:center;}
+    #model-name-display{font-size:13px;color:var(--text-muted);}
+    .control-button{
+      width:34px;height:34px;border-radius:8px;border:1px solid var(--border);
+      background:rgba(255,255,255,.7);color:#2563eb;cursor:pointer;transition:all .2s ease;
+    }
+    [data-theme="dark"] .control-button{
+      background:rgba(30,41,59,.8);color:#60a5fa;
+    }
+    .control-button:hover{background:#e0ecff;border-color:#2563eb;}
+    [data-theme="dark"] .control-button:hover{background:#1e3a8a;border-color:#60a5fa;}
+
+    /* ===== LOADING OVERLAY ===== */
+    #loading-overlay{
+      position:fixed;inset:0;background:rgba(255,255,255,0.85);
+      backdrop-filter:blur(8px);
+      display:flex;align-items:center;justify-content:center;flex-direction:column;
+      gap:12px;font-size:18px;color:var(--text);z-index:9999;visibility:hidden;pointer-events:none;
+      transition:background 0.3s ease,color 0.3s ease;
+    }
+    [data-theme="dark"] #loading-overlay{
+      background:rgba(15,23,42,1);
+    }
+    #loading-overlay.visible{visibility:visible;pointer-events:auto;}
+    .spinner{
+      width:36px;height:36px;border-radius:50%;
+      border:4px solid #e2e8f0;border-top-color:#2563eb;
+      animation:spin 1s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg);}}
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+     <header id="app-header">
+    <div class="brand-box">4D Voyager</div>
+    <div class="legend-inline">
+      <div class="legend-item"><div class="legend-color light-red"></div> Fab Start</div>
+      <div class="legend-item"><div class="legend-color red"></div> Fab End</div>
+      <div class="legend-item"><div class="legend-color green"></div> Erec Start</div>
+      <div class="legend-item"><div class="legend-color dark-green"></div> Erec End</div>
+    </div>
+    <div class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</div>
+  </header>
+
+
+  <!-- VIEWER -->
+  <div id="viewer-container"></div>
+  <div id="viewer-overlay"></div>
+  <!-- Popup under header, top-right -->
+  <div id="timeline-popup"></div>
+
+  <!-- TABLE -->
+  <div id="progress-table">
+    <button class="collapse-btn" id="progress-collapse" title="Hide table">❌</button>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Fab End</th><th>Erec End</th>
+          </tr>
+        </thead>
+        <tbody id="progress-tbody"></tbody>
+      </table>
+    </div>
+    <div class="table-mini" id="progress-mini" title="Show table">📋 Table</div>
+  </div>
+
+  <!-- BOTTOM TIMELINE -->
+  <div id="bottom-bar">
+    <input type="range" id="model-slider" min="0" max="100" value="0" />
+    <div class="timeline-scale" id="timeline-scale">
+      <!-- Timeline ticks will be generated dynamically -->
+    </div>
+    <div class="timeline-dates" id="timeline-dates">
+      <!-- Timeline dates will be generated dynamically -->
+    </div>
+   
+    
+    <div class="bottom-controls">
+      <button class="control-button" id="prev-button" title="Previous model">⏮</button>
+      <button class="control-button" id="autoplay-button">▶</button>
+      <button class="control-button" id="next-button" title="Next model">⏭</button>
+      <button class="control-button" id="rotate-button">⟳</button>
+      <span id="model-name-display"></span>
+    </div>
+  </div>
+
+  <!-- LOADING OVERLAY -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <div id="loading-text">Loading models... 0%</div>
+  </div>
+
+  <!-- GLB LOADER -->
+  <script type="module" src="./index.js"></script>
+
+  <script>
+    const toggleBtn = document.getElementById('themeToggle');
+    const overlay = document.getElementById('viewer-overlay');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    toggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+    function updateOverlayTheme(theme) {
+      // Do not darken in dark mode to preserve model brightness
+      overlay.style.background = theme === 'dark'
+        ? 'rgba(0, 0, 0, 0.0)'
+        : 'rgba(0, 0, 0, 0.1)';
+    }
+
+    // Run once on page load
+    updateOverlayTheme(currentTheme);
+
+    toggleBtn.addEventListener('click', () => {
+      const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      updateOverlayTheme(theme);
+    });
+
+    // Table collapse/expand
+    const progressTable = document.getElementById('progress-table');
+    const collapseBtn = document.getElementById('progress-collapse');
+    const progressMini = document.getElementById('progress-mini');
+    const collapsedSaved = localStorage.getItem('progressTableCollapsed');
+    if (collapsedSaved === 'true') progressTable.classList.add('collapsed');
+
+    collapseBtn?.addEventListener('click', () => {
+      progressTable.classList.add('collapsed');
+      localStorage.setItem('progressTableCollapsed', 'true');
+    });
+    progressMini?.addEventListener('click', () => {
+      progressTable.classList.remove('collapsed');
+      localStorage.setItem('progressTableCollapsed', 'false');
+    });
+
+    // Dynamic timeline generation based on project
+    function generateTimelineDates(project) {
+      const timelineConfigs = {
+        'BSGS': [
+          "10/24", "10/27", "11/04", "11/06", "11/08", "11/10", "11/14", "11/18", 
+          "11/20", "11/22", "11/26", "11/28", "11/30", "12/02", "12/04", "12/06", 
+          "12/10", "12/12", "12/15", "12/15", "12/16", "12/18", "12/20", "12/22", 
+          "12/24", "12/26", "12/28", "12/30"
+        ],
+        'CUP': [
+          "01/15", "01/18", "01/22", "01/25", "01/29", "02/01", "02/05", "02/08", 
+          "02/12", "02/15", "02/19", "02/22", "02/26", "03/01", "03/05", "03/08"
+        ],
+        'LORRY': [
+          "03/10", "03/14", "03/18", "04/03", "04/07", 
+          "04/11",  "04/19", "05/01", "05/05", "05/09", 
+          "05/13", "05/21", "05/25", "05/29", "06/06", "06/10"
+        ]
+      };
+
+      // Default to BSGS timeline if project not found
+      return timelineConfigs[project] || timelineConfigs['BSGS'];
+    }
+
+    function setupTimeline() {
+      // Get project from URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const project = (urlParams.get('project') || 'BSGS').toUpperCase();
+      
+      const dates = generateTimelineDates(project);
+      const timelineScale = document.getElementById('timeline-scale');
+      const timelineDates = document.getElementById('timeline-dates');
+      
+      // Clear existing content
+      timelineScale.innerHTML = '';
+      timelineDates.innerHTML = '';
+      
+      // Generate ticks (one for each date)
+      dates.forEach(() => {
+        const tick = document.createElement('div');
+        tick.className = 'tick';
+        timelineScale.appendChild(tick);
+      });
+      
+      // Generate date spans
+      dates.forEach(date => {
+        const span = document.createElement('span');
+        span.textContent = date;
+        timelineDates.appendChild(span);
+      });
+    }
+
+    // Initialize timeline when page loads
+    setupTimeline();
+  </script>
+</body>
+</html>
