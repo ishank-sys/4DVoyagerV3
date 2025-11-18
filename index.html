@@ -326,14 +326,10 @@ main {
 
   <script>
     // Base URL for static assets stored in Vercel Blob storage.
-    // Make sure the preview PNG files used below are uploaded there.
-    const BLOB_BASE_URL = window.process?.env?.NEXT_PUBLIC_BLOB_BASE_URL || (typeof process !== 'undefined' ? process.env?.NEXT_PUBLIC_BLOB_BASE_URL : undefined);
+    // This is only used for the small dashboard preview thumbnails.
+    const BLOB_BASE_URL = 'https://phv9f2n767db5svp.public.blob.vercel-storage.com';
 
     function buildBlobUrl(path) {
-      if (!BLOB_BASE_URL) {
-        console.error('NEXT_PUBLIC_BLOB_BASE_URL environment variable is not defined');
-        return '';
-      }
       const normalizedBase = BLOB_BASE_URL.replace(/\/+$/, '');
       const normalizedPath = String(path || '').replace(/^\/+/, '');
       return `${normalizedBase}/${normalizedPath}`;
