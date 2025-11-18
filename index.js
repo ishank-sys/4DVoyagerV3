@@ -448,6 +448,8 @@ async function loadAllModels() {
       controls.update();
 
       // Apply LORRY-specific camera and control constraints (zoom-only, top-side)
+      // Commented out to allow free camera movement for LORRY project
+      /*
       if (currentProject === 'LORRY') {
         const urlParams = new URLSearchParams(window.location.search);
         const cfg = getLorryCameraConfig(urlParams);
@@ -482,6 +484,9 @@ async function loadAllModels() {
         // Ensure rotate button is enabled for non-LORRY projects
         if (rotateButton) rotateButton.disabled = false;
       }
+      */
+      // Ensure rotate button is enabled for all projects
+      if (rotateButton) rotateButton.disabled = false;
 
       autoplayButton.disabled = false;
       loadingText.textContent = `${currentProject} models loaded successfully`;
@@ -674,26 +679,33 @@ function buildTimelineFromEvents() {
   });
 }
 
-// Update / position popup for current timeline index
+// Update / position popup for current timeline index with prev/current/next
 function updateTimelinePopup(currentIndex) {
   if (!timelinePopupEl) return;
   const numericIndex = Number(currentIndex);
-  const ev = timelineEvents.find(e => e.index === numericIndex);
-  if (!ev) { timelinePopupEl.classList.remove('visible'); return; }
-  // Fixed top-right placement under header
-  try {
-    const header = document.getElementById('app-header');
-    const table = document.getElementById('progress-table');
-    const topPx = header ? (header.getBoundingClientRect().bottom + 8 + window.scrollY) : 90;
-    let leftPx = 30;
-    // If you want to avoid table overlap, you could adjust leftPx here
-    timelinePopupEl.style.top = topPx + 'px';
-    timelinePopupEl.style.left = leftPx + 'px';
-    timelinePopupEl.style.right = 'auto';
-  } catch {}
-  const title = ev.type === 'fab' ? 'Fabrication Complete' : 'Erection Complete';
-  const noteLine = ev.note ? ` – ${ev.note}` : '';
-  timelinePopupEl.innerHTML = `<strong>${title}</strong><br/>Member ${ev.member}${noteLine}`;
+  const ordered = [...timelineEvents].sort((a, b) => a.index - b.index);
+  const currentPos = ordered.findIndex(e => e.index === numericIndex);
+  if (currentPos === -1) {
+    timelinePopupEl.classList.remove('visible');
+    return;
+  }
+
+  const prev = currentPos > 0 ? ordered[currentPos - 1] : null;
+  const curr = ordered[currentPos];
+  const next = currentPos < ordered.length - 1 ? ordered[currentPos + 1] : null;
+
+  const renderLine = (ev, cls) => {
+    if (!ev) return '';
+    const title = ev.type === 'fab' ? 'Fabrication Complete' : 'Erection Complete';
+    const note = ev.note ? ` – ${ev.note}` : '';
+    return `<div class="milestone ${cls}">${title}: Member ${ev.member}${note}</div>`;
+  };
+
+  timelinePopupEl.innerHTML =
+    renderLine(prev, 'prev') +
+    renderLine(curr, 'current') +
+    renderLine(next, 'next');
+
   timelinePopupEl.classList.add('visible');
 }
 

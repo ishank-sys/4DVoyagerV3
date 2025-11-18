@@ -108,6 +108,27 @@
       height: auto;
       max-height: 225px; /* Header (45px) + 4 rows (45px each) = 225px */
     }
+
+    /* Back button in header */
+    #back-button {
+      padding:6px 10px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:var(--bg-panel);
+      color:var(--text);
+      font-size:13px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:4px;
+      transition:background 0.2s ease,color 0.2s ease,border-color 0.2s ease;
+    }
+
+    #back-button:hover {
+      background:var(--highlight);
+      color:#ffffff;
+      border-color:var(--highlight);
+    }
     
     .table-container {
       overflow-y: auto;
@@ -218,28 +239,39 @@
       display:flex;flex-direction:column;align-items:center;gap:10px;
       transition:background 0.3s ease,color 0.3s ease;
     }
-    /* Timeline popup tooltip (fixed near the top-left under the header) */
+    /* Timeline popup under table on right side */
     #timeline-popup {
       position:fixed;
-      top:90px; /* just under the header (16px gap + 60px header + ~14px margin) */
-      left:30px; /* default offset from the left edge */
-      transform:translateY(6px);
+      right:30px;
+      top:330px; /* below the table */
       background:var(--bg-panel);
       border:1px solid var(--border);
-      padding:8px 12px;
+      padding:10px 14px;
       font-size:12px;
-      line-height:1.3;
-      max-width:320px;
+      line-height:1.4;
+      max-width:360px;
       border-radius:8px;
       box-shadow:0 4px 14px rgba(0,0,0,.15);
       pointer-events:none;
       opacity:0;
-      transition:opacity .2s ease, transform .25s ease;
-      z-index:60;
+      transition:opacity .2s ease;
+      z-index:40;
     }
     #timeline-popup.visible {
       opacity:1;
-      transform:translateY(0);
+    }
+    #timeline-popup .milestone {
+      margin-bottom:6px;
+    }
+    #timeline-popup .milestone:last-child {
+      margin-bottom:0;
+    }
+    #timeline-popup .milestone.prev,
+    #timeline-popup .milestone.next {
+      opacity:0.5;
+    }
+    #timeline-popup .milestone.current {
+      font-weight:600;
     }
 
     #model-slider{
@@ -301,7 +333,12 @@
 <body>
   <!-- HEADER -->
      <header id="app-header">
-    <div class="brand-box">4D Voyager</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button id="back-button" title="Back to dashboard" onclick="window.location.href='index.html'">
+        ⟵ Back
+      </button>
+      <div class="brand-box">4D Voyager</div>
+    </div>
     <div class="legend-inline">
       <div class="legend-item"><div class="legend-color light-red"></div> Fab Start</div>
       <div class="legend-item"><div class="legend-color red"></div> Fab End</div>
@@ -315,8 +352,6 @@
   <!-- VIEWER -->
   <div id="viewer-container"></div>
   <div id="viewer-overlay"></div>
-  <!-- Popup under header, top-right -->
-  <div id="timeline-popup"></div>
 
   <!-- TABLE -->
   <div id="progress-table">
@@ -334,6 +369,9 @@
     </div>
     <div class="table-mini" id="progress-mini" title="Show table">📋 Table</div>
   </div>
+
+  <!-- Milestone popup under table -->
+  <div id="timeline-popup"></div>
 
   <!-- BOTTOM TIMELINE -->
   <div id="bottom-bar">
@@ -409,19 +447,24 @@
     function generateTimelineDates(project) {
       const timelineConfigs = {
         'BSGS': [
-          "10/24", "10/27", "11/04", "11/06", "11/08", "11/10", "11/14", "11/18", 
-          "11/20", "11/22", "11/26", "11/28", "11/30", "12/02", "12/04", "12/06", 
-          "12/10", "12/12", "12/15", "12/15", "12/16", "12/18", "12/20", "12/22", 
-          "12/24", "12/26", "12/28", "12/30"
+          "Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026",
+          "Jul 2026", "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026",
+          "Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027"
         ],
         'CUP': [
-          "01/15", "01/18", "01/22", "01/25", "01/29", "02/01", "02/05", "02/08", 
-          "02/12", "02/15", "02/19", "02/22", "02/26", "03/01", "03/05", "03/08"
+          "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026",
+          "Jan 2027", "Feb 2027", "Mar 2027"
         ],
         'LORRY': [
-          "03/10", "03/14", "03/18", "04/03", "04/07", 
-          "04/11",  "04/19", "05/01", "05/05", "05/09", 
-          "05/13", "05/21", "05/25", "05/29", "06/06", "06/10"
+          "Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027", "May 2027", "Jun 2027"
+        ],
+        'WRC': [
+          "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025",
+          "Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026", "Jul 2026"
+        ],
+        '1': [
+          "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026",
+          "Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027"
         ]
       };
 
