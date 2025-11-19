@@ -692,8 +692,8 @@ function buildTimelineFromEvents() {
       "Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027", "May 2027", "Jun 2027"
     ],
     'WRC': [
-      "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025",
-      "Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026", "Jul 2026"
+      "Sep 2025", "Nov 2025",
+      "Mar 2026", "Apr 2026","Jun 2026", "Jul 2026"
     ],
     '1': [
       "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026",
