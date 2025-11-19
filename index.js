@@ -378,6 +378,18 @@ async function loadAllModels() {
     const urlParams = new URLSearchParams(window.location.search);
     currentProject = (urlParams.get("project") || "BSGS").toUpperCase();
     const base = currentProject;
+    
+    // Map project codes to display names
+    const projectDisplayNames = {
+      '1': 'WRC',
+      'WRC': 'Waste Management',
+      'BSGS': 'BSGS',
+      'CUP': 'CUP',
+      'LORRY': 'LORRY'
+    };
+    
+    const displayName = projectDisplayNames[currentProject] || currentProject;
+    
     const manifestUrl = buildBlobUrl(`${base}/models.json`);
 
     const res = await fetch(manifestUrl, { cache: "no-cache" });
@@ -394,7 +406,7 @@ async function loadAllModels() {
       const cacheKey = `${base}/${name}`;
       
       try {
-        loadingText.textContent = `Loading ${currentProject} models... ${Math.round(((i + 1) / names.length) * 100)}%`;
+        loadingText.textContent = `Loading ${displayName} models... ${Math.round(((i + 1) / names.length) * 100)}%`;
         
         let gltf;
         if (modelCache.has(cacheKey)) {
@@ -489,12 +501,31 @@ async function loadAllModels() {
       if (rotateButton) rotateButton.disabled = false;
 
       autoplayButton.disabled = false;
-      loadingText.textContent = `${currentProject} models loaded successfully`;
+      
+      // Map project codes to display names
+      const projectDisplayNames = {
+        '1': 'WRC',
+        'WRC': 'Waste Management',
+        'BSGS': 'BSGS',
+        'CUP': 'CUP',
+        'LORRY': 'LORRY'
+      };
+      
+      const displayName = projectDisplayNames[currentProject] || currentProject;
+      loadingText.textContent = `${displayName} models loaded successfully`;
 
       // === NEW: Load corresponding schedule.json for this project ===
       await loadScheduleForProject(currentProject);
     } else {
-      loadingText.textContent = `No models found for ${currentProject}`;
+      const projectDisplayNames = {
+        '1': 'WRC',
+        'WRC': 'Waste Management',
+        'BSGS': 'BSGS',
+        'CUP': 'CUP',
+        'LORRY': 'LORRY'
+      };
+      const displayName = projectDisplayNames[currentProject] || currentProject;
+      loadingText.textContent = `No models found for ${displayName}`;
     }
   } catch (err) {
     console.error("[Loader] Error:", err);
