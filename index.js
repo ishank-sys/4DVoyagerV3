@@ -164,9 +164,9 @@ const pointer = new THREE.Vector2();
 const LORRY_CAMERA_DEFAULTS = {
   elevationDeg: 40,    // restore the nice balanced top view
   azimuthDeg: 30,      // back to a slightly side angle
-  distanceFactor: 0.01, // closer to fill more of the viewport
+  distanceFactor: 0.00007, // zoomed in by 30% (was 0.01, now 0.007)
   minDistanceFactor: 0.000001,
-  maxDistanceFactor: 0.001,
+  maxDistanceFactor: 0.00001,
   rotateYDeg: 90,      // keep orientation consistent
   targetX: 0,
   targetY: 120,
