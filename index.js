@@ -296,70 +296,21 @@ function stopAutoplay() {
   }
 }
 function advanceSlider() {
+  if (!slider) return;
   const maxVal = Math.max(0, loadedModels.length - 1);
-  let nextVal = parseInt(slider.value) + 1;
+  let nextVal = parseInt(slider.value, 10) + 1;
   if (nextVal > maxVal) nextVal = 0;
-  slider.value = nextVal;
+  slider.value = String(nextVal);
   showModelAt(nextVal, true); // pass true to indicate this is from autoplay
 }
 
 // === Navigation Buttons ===
-nextButton?.addEventListener("click", () => {
-  stopAutoplay();
-  advanceSlider();
-});
-prevButton?.addEventListener("click", () => {
-  stopAutoplay();
-  const maxVal = Math.max(0, loadedModels.length - 1);
-  let prevVal = parseInt(slider.value) - 1;
-  if (prevVal < 0) prevVal = maxVal;
-  slider.value = prevVal;
-  showModelAt(prevVal);
-});
+// Event listeners are attached after DOM wiring in `setupUIEventListeners()`
 
-// === Autoplay ===
-autoplayButton?.addEventListener("click", () => {
-  if (autoplayButton.disabled) return;
-  if (autoplayTimer) stopAutoplay();
-  else {
-    advanceSlider();
-    autoplayTimer = setInterval(advanceSlider, 1500);
-    autoplayButton.textContent = "❚❚";
-  }
-});
 
-// === Slider direct interaction ===
-if (slider) {
-  slider.addEventListener('input', (e) => {
-    showModelAt(e.target.value);
-  });
-  slider.addEventListener('change', (e) => {
-    showModelAt(e.target.value);
-  });
-}
+// Autoplay and slider listeners are attached in setupUIEventListeners()
 
-// === Rotation ===
-rotateButton?.addEventListener("click", () => {
-  if (orbitState.running) {
-    orbitState.running = false;
-    cancelAnimationFrame(orbitState.rafId);
-    rotateButton.textContent = "⟳";
-  } else {
-    orbitState.running = true;
-    orbitState.lastTime = performance.now();
-    orbitState.speed = (Math.PI * 2) / 20000;
-    rotateButton.textContent = "⏹";
-    const rotateFrame = (now) => {
-      if (!orbitState.running) return;
-      const delta = now - orbitState.lastTime;
-      orbitState.lastTime = now;
-      orbitState.currentAngle += orbitState.speed * delta;
-      loadedModels.forEach(m => { if (m) m.rotation.y = orbitState.currentAngle; });
-      orbitState.rafId = requestAnimationFrame(rotateFrame);
-    };
-    orbitState.rafId = requestAnimationFrame(rotateFrame);
-  }
-});
+// Rotation listener attached in setupUIEventListeners()
 
 // === Resize ===
 window.addEventListener('resize', () => {
@@ -587,6 +538,9 @@ if (container) {
 
   // Start loading models for this viewer
   loadAllModels();
+  
+  // Attach UI event listeners now that elements exist
+  setupUIEventListeners();
 }
 
 async function loadScheduleForProject(project) {
@@ -687,6 +641,73 @@ async function loadScheduleForProject(project) {
       progressTbody.appendChild(tr);
     } catch(e) {}
     // fallback: if schedule fails, leave any existing table alone
+  }
+}
+
+// Attach UI listeners after DOM wiring so handlers are actually registered
+function setupUIEventListeners() {
+  if (nextButton) {
+    nextButton.addEventListener("click", () => {
+      stopAutoplay();
+      advanceSlider();
+    });
+  }
+  if (prevButton) {
+    prevButton.addEventListener("click", () => {
+      stopAutoplay();
+      if (!slider) return;
+      const maxVal = Math.max(0, loadedModels.length - 1);
+      let prevVal = parseInt(slider.value, 10) - 1;
+      if (prevVal < 0) prevVal = maxVal;
+      slider.value = String(prevVal);
+      showModelAt(prevVal);
+    });
+  }
+
+  if (autoplayButton) {
+    autoplayButton.addEventListener("click", () => {
+      if (autoplayButton.disabled) return;
+      if (autoplayTimer) stopAutoplay();
+      else {
+        if (!slider) return;
+        advanceSlider();
+        autoplayTimer = setInterval(advanceSlider, 1500);
+        autoplayButton.textContent = "❚❚";
+      }
+    });
+  }
+
+  if (slider) {
+    slider.addEventListener('input', (e) => {
+      showModelAt(e.target.value);
+    });
+    slider.addEventListener('change', (e) => {
+      showModelAt(e.target.value);
+    });
+  }
+
+  if (rotateButton) {
+    rotateButton.addEventListener("click", () => {
+      if (orbitState.running) {
+        orbitState.running = false;
+        cancelAnimationFrame(orbitState.rafId);
+        rotateButton.textContent = "⟳";
+      } else {
+        orbitState.running = true;
+        orbitState.lastTime = performance.now();
+        orbitState.speed = (Math.PI * 2) / 20000;
+        rotateButton.textContent = "⏹";
+        const rotateFrame = (now) => {
+          if (!orbitState.running) return;
+          const delta = now - orbitState.lastTime;
+          orbitState.lastTime = now;
+          orbitState.currentAngle += orbitState.speed * delta;
+          loadedModels.forEach(m => { if (m) m.rotation.y = orbitState.currentAngle; });
+          orbitState.rafId = requestAnimationFrame(rotateFrame);
+        };
+        orbitState.rafId = requestAnimationFrame(rotateFrame);
+      }
+    });
   }
 }
 
