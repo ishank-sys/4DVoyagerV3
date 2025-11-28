@@ -27,9 +27,8 @@ function setupRenderer() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
-  container.appendChild(renderer.domElement);
+  if (container) container.appendChild(renderer.domElement);
 }
-setupRenderer();
 
 // === Controls ===
 let controls;
@@ -44,7 +43,6 @@ function setupControls() {
   controls.addEventListener('start', () => renderer.setPixelRatio(1));
   controls.addEventListener('end', () => renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)));
 }
-setupControls();
 
 // Allow adjusting the zoom target on LORRY by Ctrl+Clicking the model
 renderer.domElement.addEventListener('pointerdown', (e) => {
@@ -79,8 +77,8 @@ function setupLighting() {
   dirLight.position.set(10, 10, 5);
   dirLight.castShadow = false;
   scene.add(dirLight);
+  scene.add(dirLight);
 }
-setupLighting();
 
 // === Scene Theme ===
 function applySceneBackgroundForTheme() {
@@ -89,7 +87,6 @@ function applySceneBackgroundForTheme() {
   scene.background = color;
   renderer.setClearColor(color, 1);
 }
-applySceneBackgroundForTheme();
 try {
   const themeObserver = new MutationObserver(() => applySceneBackgroundForTheme());
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -101,16 +98,16 @@ const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 loader.setDRACOLoader(dracoLoader);
 
-// === UI Elements ===
-const slider = document.getElementById("model-slider");
-const autoplayButton = document.getElementById("autoplay-button");
-const rotateButton = document.getElementById("rotate-button");
-const prevButton = document.getElementById("prev-button");
-const nextButton = document.getElementById("next-button");
-const modelNameDisplay = document.getElementById("model-name-display");
-const loadingOverlay = document.getElementById("loading-overlay");
-const loadingText = document.getElementById("loading-text");
-const progressTbody = document.getElementById("progress-tbody");
+// === UI Elements (initialized only when viewer exists) ===
+let slider = null;
+let autoplayButton = null;
+let rotateButton = null;
+let prevButton = null;
+let nextButton = null;
+let modelNameDisplay = null;
+let loadingOverlay = null;
+let loadingText = null;
+let progressTbody = null;
 
 // === Variables ===
 let loadedModels = [];
@@ -234,7 +231,7 @@ function updateModelVisibility(index) {
   loadedModels.forEach(m => m.visible = false);
   if (loadedModels[index]) {
     loadedModels[index].visible = true;
-    modelNameDisplay.textContent = loadedModels[index].userData.originalName || `Model ${index + 1}`;
+    if (modelNameDisplay) modelNameDisplay.textContent = loadedModels[index].userData.originalName || `Model ${index + 1}`;
   }
 }
 // Unified helper: always load model at index (even when autoplay paused)
@@ -242,7 +239,7 @@ function showModelAt(rawIndex, fromAutoplay = false) {
   if (!loadedModels.length) return;
   const i = Math.max(0, Math.min(parseInt(rawIndex, 10) || 0, loadedModels.length - 1));
   if (!fromAutoplay) stopAutoplay();
-  slider.value = String(i);
+  if (slider) slider.value = String(i);
   updateModelVisibility(i);
   
   // Preload next/prev models in background
@@ -295,7 +292,7 @@ function stopAutoplay() {
   if (autoplayTimer) {
     clearInterval(autoplayTimer);
     autoplayTimer = null;
-    autoplayButton.textContent = "▶";
+    if (autoplayButton) autoplayButton.textContent = "▶";
   }
 }
 function advanceSlider() {
@@ -377,7 +374,8 @@ async function loadAllModels() {
   try {
     const urlParams = new URLSearchParams(window.location.search);
     currentProject = (urlParams.get("project") || "BSGS").toUpperCase();
-    const base = currentProject;
+    // Map shorthand project codes to actual folder names served in `public/`
+    const base = currentProject === '1' ? 'WRC' : currentProject;
     
     // Map project codes to display names
     const projectDisplayNames = {
@@ -390,10 +388,43 @@ async function loadAllModels() {
     
     const displayName = projectDisplayNames[currentProject] || currentProject;
     
-    const manifestUrl = buildBlobUrl(`${base}/models.json`);
-
-    const res = await fetch(manifestUrl, { cache: "no-cache" });
-    if (!res.ok) throw new Error(`Missing or invalid models.json in ${base}`);
+    // Load manifest from local repo/public served root (use repo file), prefer local but fall back to Blob if necessary
+    const manifestUrl = `/${base}/models.json`;
+    let res;
+    try {
+      res = await fetch(manifestUrl, { cache: "no-cache" });
+    } catch (e) {
+      res = null;
+    }
+    // If local fetch failed or returned non-OK, try Blob manifest as fallback for debugging
+    if (!res || !res.ok) {
+      try {
+        const blobManifestUrl = buildBlobUrl(`${base}/models.json`);
+        console.warn(`Local manifest ${manifestUrl} unavailable, trying blob manifest ${blobManifestUrl}`);
+        const resBlob = await fetch(blobManifestUrl, { cache: "no-cache" });
+        if (resBlob && resBlob.ok) res = resBlob;
+      } catch (e) {
+        // ignore
+      }
+    }
+    if (!res || !res.ok) {
+      const msg = `Missing or invalid models.json in ${base} (tried ${manifestUrl})`;
+      console.error(msg);
+      loadingText.textContent = msg;
+      // show visible error row
+      try {
+        progressTbody.innerHTML = '';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 3;
+        td.style.color = '#b91c1c';
+        td.style.fontWeight = '600';
+        td.textContent = msg;
+        tr.appendChild(td);
+        progressTbody.appendChild(tr);
+      } catch(e){}
+      return; // stop further processing
+    }
     const names = await res.json();
     if (!Array.isArray(names) || names.length === 0) throw new Error(`models.json in ${base} is empty.`);
 
@@ -515,7 +546,7 @@ async function loadAllModels() {
       loadingText.textContent = `${displayName} models loaded successfully`;
 
       // === NEW: Load corresponding schedule.json for this project ===
-      await loadScheduleForProject(currentProject);
+      await loadScheduleForProject(base);
     } else {
       const projectDisplayNames = {
         '1': 'WRC',
@@ -531,14 +562,37 @@ async function loadAllModels() {
     console.error("[Loader] Error:", err);
     loadingText.textContent = "Error loading models.";
   } finally {
-    loadingOverlay.classList.remove("visible");
+    if (loadingOverlay) loadingOverlay.classList.remove("visible");
   }
 }
-loadAllModels();
+
+// Initialize viewer only if the viewer container exists on the page
+if (container) {
+  // Wire up UI elements now that DOM is present
+  slider = document.getElementById("model-slider");
+  autoplayButton = document.getElementById("autoplay-button");
+  rotateButton = document.getElementById("rotate-button");
+  prevButton = document.getElementById("prev-button");
+  nextButton = document.getElementById("next-button");
+  modelNameDisplay = document.getElementById("model-name-display");
+  loadingOverlay = document.getElementById("loading-overlay");
+  loadingText = document.getElementById("loading-text");
+  progressTbody = document.getElementById("progress-tbody");
+
+  // Setup renderer, controls, lighting and theme
+  setupRenderer();
+  setupControls();
+  setupLighting();
+  applySceneBackgroundForTheme();
+
+  // Start loading models for this viewer
+  loadAllModels();
+}
 
 async function loadScheduleForProject(project) {
   try {
-    const scheduleUrl = buildBlobUrl(`${project}/schedule.json`);
+    // Load schedule from local repo/public served root (use repo file), not from Blob
+    const scheduleUrl = `/${project}/schedule.json`;
     const res = await fetch(scheduleUrl, { cache: "no-cache" });
     if (!res.ok) throw new Error(`schedule.json missing for ${project}`);
     scheduleData = await res.json();
@@ -620,6 +674,18 @@ async function loadScheduleForProject(project) {
 
   } catch (err) {
     console.error(`Error loading schedule for ${project}:`, err);
+    // Show a visible error row in the table so it's obvious in the UI
+    try {
+      progressTbody.innerHTML = '';
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 3;
+      td.style.color = '#b91c1c';
+      td.style.fontWeight = '600';
+      td.textContent = `Error loading schedule for ${project}: ${err.message}`;
+      tr.appendChild(td);
+      progressTbody.appendChild(tr);
+    } catch(e) {}
     // fallback: if schedule fails, leave any existing table alone
   }
 }
