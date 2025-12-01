@@ -3,13 +3,13 @@
     "member": "Foundation Embeds",
     "fabricationCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-2.glb",
+      "file": "BSGS 03 3D-Model10-30.glb",
       "date": "30-10-2026",
       "note": ""
     },
     "erectionCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-35.glb",
+      "file": "BSGS 03 3D-Model11-11.glb",
       "date": "11-11-2026",
       "note": ""
     }
@@ -18,13 +18,13 @@
     "member": "Phase 03A",
     "fabricationCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-16.glb",
+      "file": "BSGS 03 3D-Model10-21.glb",
       "date": "10-21-2026",
       "note": ""
     },
     "erectionCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-83.glb",
+      "file": "BSGS 03 3D-Model02-04.glb",
       "date": "02-04-2027",
       "note": ""
     }
@@ -33,13 +33,13 @@
     "member": "Phase 03B",
     "fabricationCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-31.glb",
+      "file": "BSGS 03 3D-Model11-07.glb",
       "date": "11-07-2026",
       "note": ""
     },
     "erectionCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-91.glb",
+      "file": "BSGS 03 3D-Model02-13.glb",
       "date": "02-13-2027",
       "note": ""
     }
@@ -48,13 +48,13 @@
     "member": "Phase 03C",
     "fabricationCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-48.glb",
+      "file": "BSGS 03 3D-Model11-24.glb",
       "date": "11-24-2026",
       "note": ""
     },
     "erectionCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-100.glb",
+      "file": "BSGS 03 3D-Model02-22.glb",
       "date": "02-22-2027",
       "note": ""
     }
@@ -63,13 +63,13 @@
     "member": "Phase 03D",
     "fabricationCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-77.glb",
+      "file": "BSGS 03 3D-Model12-24.glb",
       "date": "12-24-2026",
       "note": ""
     },
     "erectionCompletion": {
       "files": ["BSGSifc-1.glb", "BSGSifc-2.glb", "BSGSifc-3.glb"],
-      "file": "BSGSifc-114.glb",
+      "file": "BSGS 03 3D-Model03-08.glb",
       "date": "02-01-2027",
       "note": ""
     }

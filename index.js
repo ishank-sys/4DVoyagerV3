@@ -7,6 +7,20 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 // This is hard-coded to avoid any runtime env issues.
 const BLOB_BASE_URL = 'https://phv9f2n767db5svp.public.blob.vercel-storage.com';
 
+// Map project codes to their actual storage folder and display name.
+const PROJECT_CONFIG = {
+  BSGS: { folder: 'BSGS', displayName: 'BSGS' },
+  LORRY: { folder: 'LORRY', displayName: 'LORRY' },
+  WRC: { folder: 'CUP', displayName: 'CUP' },
+  CUP: { folder: 'WRC', displayName: 'WRC' },
+  '1': { folder: '1', displayName: 'Waste Management' }
+};
+
+function getProjectConfig(code) {
+  const key = (code || 'BSGS').toUpperCase();
+  return PROJECT_CONFIG[key] || { folder: key, displayName: key };
+}
+
 function buildBlobUrl(path) {
   const normalizedBase = BLOB_BASE_URL.replace(/\/+$/, '');
   const normalizedPath = String(path || '').replace(/^\/+/, '');
@@ -44,28 +58,6 @@ function setupControls() {
   controls.addEventListener('end', () => renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)));
 }
 
-// Allow adjusting the zoom target on LORRY by Ctrl+Clicking the model
-renderer.domElement.addEventListener('pointerdown', (e) => {
-  try {
-    if (currentProject !== 'LORRY') return;
-    if (!(e.ctrlKey || e.metaKey)) return; // require modifier to avoid accidental changes
-    const visibleModel = loadedModels.find(m => m.visible);
-    if (!visibleModel) return;
-    const rect = renderer.domElement.getBoundingClientRect();
-    pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-    raycaster.setFromCamera(pointer, camera);
-    const hits = raycaster.intersectObject(visibleModel, true);
-    if (!hits.length) return;
-    const hitPoint = hits[0].point;
-    // Maintain current camera offset from target, but move both to the hit point
-    const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
-    controls.target.copy(hitPoint);
-    camera.position.copy(hitPoint.clone().add(offset));
-    camera.lookAt(controls.target);
-    controls.update();
-  } catch {}
-});
 
 // === Lighting ===
 function setupLighting() {
@@ -157,38 +149,6 @@ let orbitState = {
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
-// Adjustable camera defaults for LORRY (can be tuned easily)
-const LORRY_CAMERA_DEFAULTS = {
-  elevationDeg: 40,    // restore the nice balanced top view
-  azimuthDeg: 30,      // back to a slightly side angle
-  distanceFactor: 0.00007, // zoomed in by 30% (was 0.01, now 0.007)
-  minDistanceFactor: 0.000001,
-  maxDistanceFactor: 0.00001,
-  rotateYDeg: 90,      // keep orientation consistent
-  targetX: 0,
-  targetY: 120,
-  targetZ: 0
-};
-
-
-function getLorryCameraConfig(urlParams) {
-  const c = { ...LORRY_CAMERA_DEFAULTS };
-  const elev = parseFloat(urlParams.get('l_elev'));
-  const azim = parseFloat(urlParams.get('l_azim'));
-  const dist = parseFloat(urlParams.get('l_dist'));
-  const ry = parseFloat(urlParams.get('l_roty'));
-  const tx = parseFloat(urlParams.get('l_tx'));
-  const ty = parseFloat(urlParams.get('l_ty'));
-  const tz = parseFloat(urlParams.get('l_tz'));
-  if (!isNaN(elev)) c.elevationDeg = elev;
-  if (!isNaN(azim)) c.azimuthDeg = azim;
-  if (!isNaN(dist)) c.distanceFactor = dist;
-  if (!isNaN(ry)) c.rotateYDeg = ry;
-  if (!isNaN(tx)) c.targetX = tx;
-  if (!isNaN(ty)) c.targetY = ty;
-  if (!isNaN(tz)) c.targetZ = tz;
-  return c;
-}
 
 // === FPS Optimization ===
 let frameCount = 0, lastTime = performance.now(), avgFPS = 60;
@@ -324,20 +284,9 @@ async function loadAllModels() {
   loadingOverlay.classList.add("visible");
   try {
     const urlParams = new URLSearchParams(window.location.search);
-    currentProject = (urlParams.get("project") || "BSGS").toUpperCase();
-    // Map shorthand project codes to actual folder names served in `public/`
-    const base = currentProject === '1' ? 'WRC' : currentProject;
-    
-    // Map project codes to display names
-    const projectDisplayNames = {
-      '1': 'WRC',
-      'WRC': 'Waste Management',
-      'BSGS': 'BSGS',
-      'CUP': 'CUP',
-      'LORRY': 'LORRY'
-    };
-    
-    const displayName = projectDisplayNames[currentProject] || currentProject;
+    const projectParam = (urlParams.get("project") || "BSGS").toUpperCase();
+    const { folder: base, displayName } = getProjectConfig(projectParam);
+    currentProject = base; // keep global state aligned to the actual folder we load from
     
     // Load manifest from local repo/public served root (use repo file), prefer local but fall back to Blob if necessary
     const manifestUrl = `/${base}/models.json`;
@@ -406,13 +355,7 @@ async function loadAllModels() {
         const center = box.getCenter(new THREE.Vector3());
         model.position.sub(center);
         
-        if (currentProject === 'LORRY') {
-          try {
-            const urlParams = new URLSearchParams(window.location.search);
-            const cfg = getLorryCameraConfig(urlParams);
-            model.rotation.y += THREE.MathUtils.degToRad(cfg.rotateYDeg || 0);
-          } catch {}
-        }
+        // No per-project rotation adjustments; keep models consistent across projects
         scene.add(model);
         loadedModels.push(model);
         
@@ -441,72 +384,16 @@ async function loadAllModels() {
       controls.target.set(0, 0, 0);
       controls.update();
 
-      // Apply LORRY-specific camera and control constraints (zoom-only, top-side)
-      // Commented out to allow free camera movement for LORRY project
-      
-      if (currentProject === 'LORRY') {
-        const urlParams = new URLSearchParams(window.location.search);
-        const cfg = getLorryCameraConfig(urlParams);
-        const elev = THREE.MathUtils.degToRad(cfg.elevationDeg);
-        const azim = THREE.MathUtils.degToRad(cfg.azimuthDeg);
-        const dist = Math.max(0.01, maxDim * cfg.distanceFactor);
-        const y = dist * Math.sin(elev);
-        const r = dist * Math.cos(elev);
-        const x = r * Math.cos(azim);
-        const z = r * Math.sin(azim);
-          // Set adjustable target and position camera relative to it
-          controls.target.set(cfg.targetX, cfg.targetY, cfg.targetZ);
-          camera.position.set(cfg.targetX + x, cfg.targetY + y, cfg.targetZ + z);
-          camera.lookAt(controls.target);
-        // Lock controls to zoom only
-        controls.enableRotate = false;
-        controls.enablePan = false;
-        controls.enableZoom = true;
-        controls.enableKeys = false;
-        controls.minDistance = Math.max(0.01, maxDim * cfg.minDistanceFactor);
-        controls.maxDistance = Math.max(controls.minDistance + 0.01, maxDim * cfg.maxDistanceFactor);
-        controls.update();
-        // Disable rotate button controls for LORRY
-        if (rotateButton) {
-          rotateButton.disabled = true;
-          if (orbitState.running) {
-            orbitState.running = false;
-            cancelAnimationFrame(orbitState.rafId);
-          }
-        }
-      } else {
-        // Ensure rotate button is enabled for non-LORRY projects
-        if (rotateButton) rotateButton.disabled = false;
-      }
-      
-      // Ensure rotate button is enabled for all projects
+      // Use default camera/controls behavior for all projects
       if (rotateButton) rotateButton.disabled = false;
 
       autoplayButton.disabled = false;
       
-      // Map project codes to display names
-      const projectDisplayNames = {
-        '1': 'WRC',
-        'WRC': 'Waste Management',
-        'BSGS': 'BSGS',
-        'CUP': 'CUP',
-        'LORRY': 'LORRY'
-      };
-      
-      const displayName = projectDisplayNames[currentProject] || currentProject;
       loadingText.textContent = `${displayName} models loaded successfully`;
 
       // === NEW: Load corresponding schedule.json for this project ===
       await loadScheduleForProject(base);
     } else {
-      const projectDisplayNames = {
-        '1': 'WRC',
-        'WRC': 'Waste Management',
-        'BSGS': 'BSGS',
-        'CUP': 'CUP',
-        'LORRY': 'LORRY'
-      };
-      const displayName = projectDisplayNames[currentProject] || currentProject;
       loadingText.textContent = `No models found for ${displayName}`;
     }
   } catch (err) {
@@ -767,9 +654,8 @@ function buildTimelineFromEvents() {
   // Use hardcoded dates based on project instead of schedule dates
   const timelineConfigs = {
     'BSGS': [
-      "Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026",
-      "Jul 2026", "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026",
-      "Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027"
+      "10/21/26", "11/07/26", "11/24/26", "12/24/26", "11/11/26", "02/04/27",
+      "02/13/27", "02/22/27", "02/01/27"
     ],
     'CUP': [
       "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026",
